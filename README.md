@@ -158,6 +158,12 @@ Figure 2:
 
 ![Screenshot 2023-12-05 154534](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/13f59b6e-59b2-42fe-b2e5-e08024a39f63)
 
+At this point, you may ask why we divided our dataset into 3 different segments. The reason for this is that I first found the optimum number of clusters by using the Elbow method in the same way as my dataset, so we set our cluster parameter to 3.
+
+![Screenshot 2023-12-05 171436](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/7292080a-4424-437e-ab12-ced2c6fb7412) ![Screenshot 2023-12-05 171453](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/2ab3b912-787e-48de-b17e-2120110fff23)
+
+
+
 You can use whatever you want, I will continue on workbench.
 
 Yes, we have created the model. Now let's see the segmentation results for every single customer. For this, we write a BigQuery-SQL commands again and predict the results. You can write commands either on the Workbench (Figure 3) or in the BigQuery interface (Figure 4) to see the results.
