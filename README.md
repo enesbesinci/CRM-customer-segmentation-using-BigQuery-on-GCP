@@ -120,7 +120,86 @@ The results:
 
 ![Screenshot 2023-11-30 220143](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/66e6323b-412e-4eea-8445-0908013440ed)
 
-As you can see above, we have lots of different values in some categorical features, it's too much to encoded, that's why we should handle it.
+As you can see above, we have lots of different values in some categorical features, it's too much to encoded, that's why we should handle it. Now we will create some new different features.
+
+![Screenshot 2023-12-05 152929](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/52300bc4-28b1-4e45-8eaf-a9921b0b6735) ![Screenshot 2023-12-05 152947](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/181d3e9f-0e8a-41a3-b556-233c86949e2c)
+
+We have created some new features, let's take a look.
+
+![Screenshot 2023-12-05 153047](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/52eca4f3-d751-420d-9d10-8255fffd95fa)
+
+And after that we save the summary of new clean data to a csv file to review it again and upload the Cloud Storage.
+
+![Screenshot 2023-12-05 153028](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/e198ce1d-8218-4004-9f69-428645e584a8)
+
+## STEP 4: Build a K-Means Clustering Model using BigQuery on Workbench
+
+In this step we will build a clustering model to segment customers. We will build two different segmentation model. The first one will be product-preferences-based and second one will be transaction-based.
+
+First, we copy the dataframe to be used in the K-Means model.
+
+![Screenshot 2023-12-05 153400](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/c49da213-9cbd-4c47-be58-0e8ffd9e1eb2)
+
+Now let's choose our features for the product-preferences-based model
+
+![Screenshot 2023-12-05 153644](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/50f53494-49b0-42c6-b856-d366d5592a36)
+
+Then standardize the product-preferences-based dataset for use in our model
+
+![Screenshot 2023-12-05 154446](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/c4985e59-5398-4226-81bc-5b8c47f2ca07)
+
+Now we can build the K-Means model. In this section, we can either build our model directly on BigQuery (Figure 1) or we can use the same BigQuery codes and create a BigQuery client and build our model on Vertex AI Workbench (Figure 2).
+
+Figure 1:
+
+![Screenshot 2023-12-05 160228](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/4c83934c-950d-4eb3-a973-44b0478b0b6e)
+
+Figure 2:
+
+![Screenshot 2023-12-05 154534](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/13f59b6e-59b2-42fe-b2e5-e08024a39f63)
+
+You can use whatever you want, I will continue on workbench.
+
+Yes, we have created the model. Now let's see the segmentation results for every single customer. For this, we write a BigQuery-SQL commands again and predict the results. You can write commands either on the Workbench (Figure 3) or in the BigQuery interface (Figure 4) to see the results.
+
+Figure 3:
+
+![Screenshot 2023-12-05 154553](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/eb455268-ab8e-4a0d-9839-f86e74f46b60)
+
+Figure 4:
+
+![Screenshot 2023-12-05 161326](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/ca02e140-8bcb-4750-b190-b2bba4ae6fe6)
+
+And save the results to a csv file to review it and import. Then let's look at the top 5 results and how many customers are there in each of these categories?
+
+![Screenshot 2023-12-05 160835](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/1f578db8-87e3-4f86-ba2b-a4a5b237cc62)
+
+As you can see, the centroid_id column is the segmentation result for each customer. But there are numbers for each customers and it doesn't look nice, let's replace the numbers with letters.
+
+![Screenshot 2023-12-05 161608](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/48efe8d9-a9cd-4f9e-8720-4d77c5e64113)
+
+Yes, we have created the model and now we know the segments for every single single customer.
+
+we will now analyze our results to gain a better understanding of them and present them in a clearer format, such as a presentation, to our team or as needed.
+
+Let's see how many customers we have in each category.
+
+![Screenshot 2023-12-05 162426](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/0ee0178d-ab29-40b9-8847-c69e983e8437)
+
+In total, in which category customers preferred which products more.
+
+![Screenshot 2023-12-05 162450](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/2175a948-ebff-45ca-ba00-caf62a51fa8b)
+
+We should remember that the more crowded a cluster is, the higher its total consumption is likely to be, so let's look at which products each segment prefers more on average.
+
+![Screenshot 2023-12-05 162708](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/e7b6dbab-b93a-4c86-a988-ababeb1db2ef)
+
+Finally, let's take a look at the consumption of gold and wine by clients and see how they differ from each other.
+
+![Screenshot 2023-12-05 163004](https://github.com/enesbesinci/customer-segmentation-using-BigQuery-on-GCP/assets/110482608/2ba7b43e-45e8-4478-8657-ae86b37e8fe0)
+
+We can identify the differences between clusters. At this stage, we now know which customers belong to which cluster and are aware of the product preferences within these clusters. From this point on, we should develop specialized sales, advertising, and marketing activities for these segments. For instance, for a segment with high alcohol and meat consumption, we can channel consumption through techniques such as advertisements, coupons, and other promotional strategies tailored to these products. It is essential to consider the characteristics of each segment and design targeted marketing solutions accordingly.
+
 
 
 
